@@ -1,0 +1,24 @@
+{
+  "name": "HMHTest",
+  "version": "0.0.0",
+  "authors": [
+    "garethdn <garethdn@gmail.com>"
+  ],
+  "description": "Code test for HMH",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "backbone": "~1.1.2",
+    "handlebars": "~2.0.0",
+    "jquery": "~2.1.1",
+    "bootstrap": "~3.2.0",
+    "modernizr": "~2.8.3"
+  }
+}
