@@ -1,0 +1,18 @@
+{
+  "name": "HMHTest",
+  "version": "0.0.0",
+  "description": "Code test for HMH",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/garethdn/hmhtest.git"
+  },
+  "author": "garethdn",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/garethdn/hmhtest/issues"
+  },
+  "homepage": "https://github.com/garethdn/hmhtest",
+  "dependencies": {
+    "http-server": "^0.7.2"
+  }
+}
