@@ -28,6 +28,15 @@ npm install http-server -g
 
 Navigate to http://localhost:8080/app to use the app
 
+
+If you try to open the index.html file without running the server you will get an error like:
+
+```
+Cross origin requests are only supported for protocol schemes: http, data, chrome-extension, https, chrome-extension-resource. 
+```
+
+...due to trying to fetch the json file
+
 ### TODO
 
 * Refactor pagination
