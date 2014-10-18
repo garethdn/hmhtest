@@ -18,13 +18,9 @@
 
 <body>
 
-  <header class="navbar navbar-default" role="">
-    <div class="container">
-      <div class="navbar-header">
-        <span class="navbar-brand">Brand info</span>
-      </div>
-    </div>
-  </header>
+  <div class="app-container">
+
+  </div>
 
   
 
@@ -35,8 +31,21 @@
 
   <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
-  <!-- VIEWS -->
+  <!-- RESOURCES -->
+  <script type="text/javascript" src="scripts/resources/Settings.js"></script>
 
+  <!-- HELPERS -->
+  <script type="text/javascript" src="scripts/helpers/underscore.js"></script>
+  <script type="text/javascript" src="scripts/helpers/handlebars.js"></script>
+
+  <!-- VIEWS -->
+  <script type="text/javascript" src="scripts/views/shared/BaseView.js"></script>
+  <script type="text/javascript" src="scripts/views/shared/Pagination.js"></script>
+  <script type="text/javascript" src="scripts/views/articles/ItemView.js"></script>
+  <script type="text/javascript" src="scripts/views/articles/Detail.js"></script>
+  <script type="text/javascript" src="scripts/views/articles/CollectionView.js"></script>
+  <script type="text/javascript" src="scripts/views/articles/ResultsLayout.js"></script>
+  <script type="text/javascript" src="scripts/views/articles/Layout.js"></script>
 
   <!-- MODELS -->
   <script type="text/javascript" src="scripts/models/Article.js"></script>
@@ -45,7 +54,155 @@
   <script type="text/javascript" src="scripts/collections/Article.js"></script>
 
   <!-- ROUTERS -->
+  <script type="text/javascript" src="scripts/routers/Article.js"></script>
 
+  <!-- TEMPLATES -->
+  <script id="AppLayoutTemplate" type="text/x-handlebars-template">
+    <div class="header">
+      <header class="navbar navbar-default" role="">
+        <div class="container">
+          <div class="navbar-header">
+            <a href="#" class="navbar-brand">My Articles</a>
+          </div>
+        </div>
+      </header>
+    </div>
+
+    <div class="container region-main"></div>
+  </script>
+
+  <script id="ResultsLayoutTemplate" type="text/x-handlebars-template">
+    <div class="row">
+      <div class="region-pagination"></div>
+    </div>
+
+    <div class="region-results"></div>
+  </script>
+
+  <script id="StandardsPartialTemplate" type="text/x-handlebars-template">
+    <h5>Standards</h5>
+    <dl>
+      {{#each standards}}
+        <dt>{{id}}</dt>
+        <dd>{{description}}</dd>
+      {{/each}}
+    </dl>
+  </script>
+
+  <script id="ArticleItemTemplate" type="text/x-handlebars-template">
+    <div class="row article">
+      <div class="col-sm-10 col-xs-10">
+        <h4>
+        {{#if viewable}}
+          <a href="#detail/{{id}}">{{display_title}}</a>
+        {{else}}
+          {{display_title}}
+        {{/if}}
+        <em class="small text-muted"> ({{language}})</em> - <small class="text-upper">{{media_type}}</small></h4>
+        <em class="small">Resource type: {{resource_type}}</em>
+      </div>
+      <div class="col-sm-2 col-xs-2 text-right">
+        <button class="btn btn-xs btn-primary spacing-top-sm" data-action="toggle-more-info"><span class="glyphicon glyphicon-chevron-right"></span> More info</button>
+      </div>
+    </div>
+    <div class="more-info hide">
+      <div class="row">
+        <div class="col-sm-8">
+          <blockquote><em>"{{meaningful_description}}"</em></blockquote>
+        </div>
+        <div class="col-sm-4 text-right">
+          <dl>
+            <dt>Categorization</dt>
+            <dd>{{categorization}}</dd>
+          </dl>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          {{#if standards}}
+            {{> standards}}
+          {{/if}}
+          <p class="text-right text-muted small">{{additional_text}}</p>
+        </div>
+      </div>
+    </div>
+
+  </script>
+
+  <script id="ArticleDetailTemplate" type="text/x-handlebars-template">
+    <div class="row">
+      <div class="col-sm-12">
+        <button class="btn" data-action="navigate-back">Back</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <h2>{{display_title}}
+          <em class="small text-muted"> ({{language}})</em> - 
+          <small class="text-upper">{{media_type}}</small>
+          <small class="pull-right">Ref: {{GUID}}</small>
+        </h2>
+        <em class="">Resource type: {{resource_type}}</em>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-8">
+        <blockquote><em>"{{meaningful_description}}"</em></blockquote>
+      </div>
+      <div class="col-sm-4 text-right">
+        <dl>
+          <dt>Categorization</dt>
+          <dd>{{categorization}}</dd>
+        </dl>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        {{#if standards}}
+          {{> standards}}
+        {{/if}}
+        <p class="text-right text-muted small">{{additional_text}}</p>
+      </div>
+    </div>
+  </script>
+
+  <script id="PaginationTemplate" type="text/x-handlebars-template">
+  
+    <div class="col-sm-6 spacing-top-sm">
+      <form class="article-search navbar-left" role="search">
+        <div class="form-group">
+          <label for="display_title">Title</label>
+          <input type="text" name="display_title" value="{{query.display_title}}" class="form-control" placeholder="Search by title...">
+        </div>
+        <div class="form-group">
+          <label for="sort_by">Sort By</label>
+          <select class="form-control" name="sort_by">
+            <option value="1" {{#if_eq query.sort_by compare="1"}}selected="selected"{{/if_eq}}>Title</option>
+            <option value="2" {{#if_eq query.sort_by compare="2"}}selected="selected"{{/if_eq}}>Language</option>
+            <option value="3" {{#if_eq query.sort_by compare="3"}}selected="selected"{{/if_eq}}>Resource Type</option>
+            <option value="4" {{#if_eq query.sort_by compare="4"}}selected="selected"{{/if_eq}}>Media Type</option>
+          </select>
+        </div>
+        <button data-action="search" class="btn btn-success">Submit</button>
+      </form>
+    </div>
+
+    {{#if Pages}}
+      <div class="col-sm-6 text-right">
+        <ul class="pagination pagination-sm">
+          <li>
+            <a data-page="{{prevPage}}" href="#?{{PrevPageUrl}}">&laquo;</a>
+          </li>
+          {{#each Pages}}
+            <li class="{{#if Selected}}active{{/if}}"><a data-page="{{Page}}" href="#?{{Url}}">{{Page}}</a></li>
+          {{/each}}
+          <li>
+            <a data-page="{{nextPage}}" href="#?{{NextPageUrl}}">&raquo;</a>
+          </li>
+        </ul>
+      </div>
+    {{/if}}
+  </script>
 
   <!-- APP FILE -->
   <script type="text/javascript" src="scripts/App.js"></script>

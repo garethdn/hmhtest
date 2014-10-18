@@ -1,0 +1,28 @@
+.article {
+	border-top: 1px solid #ddd;
+	padding: 10px 0;
+}
+
+form.article-search .form-group{
+	display: inline-block;
+}
+
+.text-upper {
+	text-transform: uppercase;
+}
+
+.spacing-top-sm {
+	margin-top: 10px;
+}
+
+.spacing-top-md {
+	margin-top: 20px;
+}
+
+.spacing-top-lg {
+	margin-top: 30px;
+}
+
+.region-pagination {
+	min-height: 95px;
+}

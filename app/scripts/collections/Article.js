@@ -9,6 +9,12 @@ HMH.Collections.Article = Backbone.Collection.extend({
 
   parse: function(response) {
     return response.response.results.result;
+  },
+
+  setComparator: function(sortBy){
+    this.comparator = function(model){
+      return model.get( HMH.Resources.ARTICLE_PROPERTIES[sortBy] ).toLowerCase();
+    };
   }
 
 });
