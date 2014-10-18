@@ -44,5 +44,6 @@ Cross origin requests are only supported for protocol schemes: http, data, chrom
 * Copy dependencies from bower_components to a dist folder
 * Add option to change sort order (asc / desc)
 * Add option to reset search
-* Expand search to look for more than just title
+* <del>Expand search to look for more than just title</del>
+* Expand search to look text in Standards
 

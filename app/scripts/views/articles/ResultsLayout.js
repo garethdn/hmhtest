@@ -78,8 +78,14 @@ HMH.Views.Articles.ResultsLayout = HMH.Views.BaseView.extend({
 
     // search by display title
     if (queryObj.display_title) {
+      // filteredCollection = this.collection.filter(function(model) {
+      //   return (model.get('display_title').toLowerCase()).indexOf(queryObj.display_title.toLowerCase()) > -1;
+      // });
+
       filteredCollection = this.collection.filter(function(model) {
-        return (model.get('display_title').toLowerCase()).indexOf(queryObj.display_title.toLowerCase()) > -1;
+        return _.any(model.attributes, function(val, attr) {
+          return _.isString(val) && val.toLowerCase().indexOf(queryObj.display_title.toLowerCase()) > -1;
+        });
       });
     }
 
